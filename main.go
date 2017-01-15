@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/lucasb-eyer/go-colorful"
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -121,5 +123,6 @@ END:
 				break END
 			}
 		}
+		time.Sleep(time.Duration(100) * time.Millisecond)
 	}
 }
