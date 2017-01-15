@@ -201,14 +201,8 @@ func (p *program) rawReadLine() (string, error) {
 	lineReceiver := make(chan readOutput, 1)
 	go func() {
 		line, err := p.stdout.ReadString('\n')
-		if line == "" {
-			if err != nil {
-				err = errors.New("Pusta odpowiedź")
-			}
-		} else {
-			line = line[:len(line)-1]
-		}
-		// fmt.Printf("ODEBRANO #%d: %s\n", p.playerID+1, line)
+		line = strings.TrimSpace(line)
+		fmt.Printf("ODEBRANO #%d: %s\n", p.playerID+1, line)
 		lineReceiver <- readOutput{
 			line: line,
 			err:  err,
@@ -229,7 +223,7 @@ func (p *program) readLine() (string, error) {
 }
 
 func (p *program) writeLine(line string) error {
-	// fmt.Printf("WYSŁANO #%d: %s\n", p.playerID+1, line)
+	fmt.Printf("WYSŁANO #%d: %s\n", p.playerID+1, line)
 	_, err := p.stdin.Write([]byte(line + "\n"))
 	return err
 }
