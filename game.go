@@ -118,6 +118,13 @@ func (g *game) retrievePings() error {
 	return nil
 }
 
+func abs(value int) int {
+	if value < 0 {
+		return -value
+	}
+	return value
+}
+
 func (g *game) doGameStep(playerNumber uint8) error {
 	p := &g.players[playerNumber]
 	line, err := p.readLine()
@@ -135,6 +142,11 @@ func (g *game) doGameStep(playerNumber uint8) error {
 			return err
 		}
 	}
+
+	if abs(numericParts[0]-numericParts[2])+abs(numericParts[1]-numericParts[3]) != 1 {
+		return errors.New("Niepoprawny ruch")
+	}
+
 	result := make(chan error)
 	g.commandQueue <- func(board *board) {
 		var err error
