@@ -80,6 +80,7 @@ func (g *game) lose(player uint8) {
 		winner = 0
 	}
 	fmt.Printf("Program %d wygrał!\n", winner+1)
+	exitStatus = int(winner) + 1
 }
 
 func (g *game) retrievePings() error {
@@ -133,7 +134,7 @@ func (g *game) doGameStep(playerNumber uint8) error {
 	}
 	stringParts := strings.SplitN(line, " ", 4)
 	if len(stringParts) < 4 {
-		return errors.New(fmt.Sprintf("Oczekiwano czterech części odpowiedzi, otrzymano %d", len(stringParts)))
+		return fmt.Errorf("Oczekiwano czterech części odpowiedzi, otrzymano %d", len(stringParts))
 	}
 	var numericParts [4]int
 	for i, part := range stringParts {
@@ -214,7 +215,7 @@ func (p *program) rawReadLine() (string, error) {
 	go func() {
 		line, err := p.stdout.ReadString('\n')
 		line = strings.TrimSpace(line)
-		fmt.Printf("ODEBRANO #%d: %s\n", p.playerID+1, line)
+		//fmt.Printf("ODEBRANO #%d: %s\n", p.playerID+1, line)
 		lineReceiver <- readOutput{
 			line: line,
 			err:  err,
@@ -235,7 +236,7 @@ func (p *program) readLine() (string, error) {
 }
 
 func (p *program) writeLine(line string) error {
-	fmt.Printf("WYSŁANO #%d: %s\n", p.playerID+1, line)
+	//fmt.Printf("WYSŁANO #%d: %s\n", p.playerID+1, line)
 	_, err := p.stdin.Write([]byte(line + "\n"))
 	return err
 }

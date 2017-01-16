@@ -3,9 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 	"runtime"
 	"strconv"
 )
+
+var exitStatus int
 
 func main() {
 	delay := flag.Duration("delay", 0, "opóźnienie wyświetlania kroków")
@@ -26,7 +29,7 @@ func main() {
 		err = game.doGame()
 		if err != nil {
 			close(commandQueue)
-			fmt.Println("Przyczyna (porażki innego programu):", err)
+			//fmt.Println("Przyczyna (porażki innego programu):", err)
 		}
 	}()
 
@@ -45,4 +48,5 @@ func main() {
 		runtime.LockOSThread()
 		startGraphics(commandQueue, size, *delay)
 	}
+	os.Exit(exitStatus)
 }

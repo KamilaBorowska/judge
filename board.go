@@ -80,7 +80,7 @@ type field struct {
 }
 
 func rectangleForPosition(size int, x int, y int) sdl.Rect {
-	paddingSize := int32(2)
+	paddingSize := int32(1)
 	boxHorizontalSize := (width - paddingSize*(int32(size)-1)) / int32(size)
 	boxVerticalSize := (height - paddingSize*(int32(size)-1)) / int32(size)
 	return sdl.Rect{
